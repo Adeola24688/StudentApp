@@ -1,0 +1,75 @@
+<div class="container">
+  <h2>{{ isEditMode ? 'Edit Student' : 'Add New Student' }}</h2>
+
+  <form [formGroup]="form" (ngSubmit)="saveStudent()">
+    <div class="form-group">
+      <label>First Name</label>
+      <input
+        type="text"
+        formControlName="firstName"
+        placeholder="Enter first name"
+        class="form-input"
+        [class.error]="firstName?.invalid && firstName?.touched"
+      />
+      <div class="error-message" *ngIf="firstName?.invalid && firstName?.touched">
+        <span *ngIf="firstName?.errors?.['required']">First name is required</span>
+        <span *ngIf="firstName?.errors?.['minlength']"
+          >First name must be at least 2 characters</span
+        >
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input
+        type="text"
+        formControlName="lastName"
+        placeholder="Enter last name"
+        class="form-input"
+        [class.error]="lastName?.invalid && lastName?.touched"
+      />
+      <div class="error-message" *ngIf="lastName?.invalid && lastName?.touched">
+        <span *ngIf="lastName?.errors?.['required']">Last name is required</span>
+        <span *ngIf="lastName?.errors?.['minlength']">Last name must be at least 2 characters</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Enter email"
+        class="form-input"
+        [class.error]="email?.invalid && email?.touched"
+      />
+      <div class="error-message" *ngIf="email?.invalid && email?.touched">
+        <span *ngIf="email?.errors?.['required']">Email is required</span>
+        <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Phone</label>
+      <input
+        type="text"
+        formControlName="phone"
+        placeholder="Enter phone (at least 10 digits)"
+        class="form-input"
+        [class.error]="phone?.invalid && phone?.touched"
+      />
+      <div class="error-message" *ngIf="phone?.invalid && phone?.touched">
+        <span *ngIf="phone?.errors?.['required']">Phone is required</span>
+        <span *ngIf="phone?.errors?.['pattern']">Phone must contain at least 10 digits</span>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-save" [disabled]="form.invalid || isSubmitting">
+        {{ isSubmitting ? 'Saving...' : isEditMode ? 'Update Student' : 'Add Student' }}
+      </button>
+
+      <a routerLink="/" class="btn-cancel">Cancel</a>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,81 @@
+<div class="container">
+  <h2>Student Registration</h2>
+
+  <div class="controls">
+    <a routerLink="/add" class="btn-add">+ Add New Student</a>
+
+    <div class="search-box">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="searchStudents()"
+        placeholder="Search by name or email..."
+        class="search-input"
+      />
+      <span *ngIf="searchQuery" class="results-count">{{ filteredStudents.length }} result(s)</span>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading students...</p>
+  </div>
+
+  <table *ngIf="!isLoading">
+    <thead>
+      <tr>
+        <th class="sortable" (click)="sortStudents('firstName')">
+          First Name{{ getSortIndicator('firstName') }}
+        </th>
+        <th class="sortable" (click)="sortStudents('lastName')">
+          Last Name{{ getSortIndicator('lastName') }}
+        </th>
+        <th class="sortable" (click)="sortStudents('email')">
+          Email{{ getSortIndicator('email') }}
+        </th>
+        <th class="sortable" (click)="sortStudents('phone')">
+          Phone{{ getSortIndicator('phone') }}
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of paginatedStudents">
+        <td>{{ student.firstName }}</td>
+        <td>{{ student.lastName }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.phone }}</td>
+        <td>
+          <a [routerLink]="['/edit', student.id]" class="btn-edit">Edit</a>
+          <button (click)="deleteStudent(student.id)" class="btn-delete">Delete</button>
+        </td>
+      </tr>
+      <tr *ngIf="paginatedStudents.length === 0">
+        <td colspan="5">No students found.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination" *ngIf="totalPages > 1 && !isLoading">
+    <button (click)="previousPage()" [disabled]="currentPage === 1" class="btn-page">
+      ← Previous
+    </button>
+
+    <div class="page-numbers">
+      <button
+        *ngFor="let page of getPageNumbers()"
+        (click)="goToPage(page)"
+        [class.active]="page === currentPage"
+        class="page-number"
+      >
+        {{ page }}
+      </button>
+    </div>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="btn-page">
+      Next →
+    </button>
+
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+  </div>
+</div>
