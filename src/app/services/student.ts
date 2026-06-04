@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 export interface Student {
   id: number;
@@ -15,7 +16,7 @@ export interface Student {
   providedIn: 'root',
 })
 export class StudentService {
-  private apiUrl = 'http://localhost:5160/api/students';
+  private apiUrl = `${environment.apiBaseUrl}/students`;
   private studentsRefresh = new Subject<void>();
 
   constructor(private http: HttpClient) {}
